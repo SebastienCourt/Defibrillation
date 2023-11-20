@@ -1,0 +1,87 @@
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% parameters for program SFB_maxmax                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+ALPHAX = 0.002; % Parameter for the cost function
+SOL_INIT = 0; % Type of initial data
+
+
+BETAX = 0.0010; % Coefficient for the nonlinear term
+NUX = 0.0002;
+
+LAMBDAX = 0.05;
+MUX = 0.05;
+
+THETA = 0.5;%0.5; % Parameter for theta-method ; 0.5 ---> Crank-Nicholson
+TMAX = 15.00;
+N_TIME = 750;
+EPS = 0.1;%1.e-8;%8.e-3;%0.00000001;
+NMAX = 100;
+TAU0 = TMAX*0.50;%4.37704; % To initialize the optimal time
+
+
+QUAD = 0;
+N = 1;
+
+if (N == 1) 
+  MESH_FILE = 'structured:GT="GT_PK(1,1)";SIZES=[1];NOISED=0;NSUBDIV=[100]';
+  MESH_TYPE = 'GT_PK(1,1)'; 
+  IM = 'IM_GAUSS1D(6)';     % Integration method.
+  IM_SIMPLEX = IM;          % Integration method on sub-triangles.
+  FEM = 'FEM_PK(1,1)';      % Finite element method for the unknown.
+  FEM_RHS = FEM;            % Finite element method for the rhs
+  FEM_MULT = 'FEM_PK(1,0)'; % Finite element method for multipliers
+  OK = 1;
+end;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LATER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if (N == 2 && QUAD)
+  MESH_FILE = 'structured:GT="GT_QK(2,2)";SIZES=[1,1];NOISED=0;NSUBDIV=[20,20]';
+  IM = 'IM_GAUSS_PARALLELEPIPED(2,6)';        % Integration method.
+  IM_SIMPLEX = 'IM_STRUCTURED_COMPOSITE(IM_TRIANGLE(6),2)';   % Integration method on sub-triangles.
+  FEM = 'FEM_QK(2,2)';          % Finite element method for the displacement.
+  FEM_MULT = 'FEM_QK(2,0)';    % Finite element method for multipliers
+  FEM_RHS = 'FEM_QK(2,2)';      % Finite element method for the rhs
+end;
+
+if (N == 2 && ~QUAD)
+  MESH_FILE = 'structured:GT="GT_PK(2,2)";SIZES=[1,1];NOISED=0;NSUBDIV=[40,40]';
+  IM = 'IM_STRUCTURED_COMPOSITE(IM_TRIANGLE(9),2)';    % Integration method.
+  IM_SIMPLEX = 'IM_STRUCTURED_COMPOSITE(IM_TRIANGLE(9),2)';
+  FEM =     'FEM_PK(2,2)';      % Finite element method for the displacement.
+  FEM_MULT = 'FEM_PK(2,0)';    % Finite element method for multipliers
+  FEM_RHS = 'FEM_PK(2,2)';      % Finite element method for the rhs
+end;
+
+
+if (N == 3 && QUAD)
+  MESH_FILE = 'structured:GT="GT_QK(3,1)";SIZES=[1,1,1];NOISED=0;NSUBDIV=[3,3,3]';
+  IM = 'IM_GAUSS_PARALLELEPIPED(3,6)';        % Integration method.
+  IM_SIMPLEX = 'IM_STRUCTURED_COMPOSITE(IM_TETRAHEDRON(6),2)';   % Integration method on sub-triangles.
+  FEM = 'FEM_QK(3,2)';      % Finite element method for the displacement.
+  FEM_RHS = FEM;            % Finite element method for the rhs
+  FEM_MULT = 'FEM_QK(3,0)';    % Finite element method for multipliers
+end;
+
+if (N == 3 && ~QUAD)
+  MESH_FILE = 'structured:GT="GT_PK(3,1)";SIZES=[1,1,1];NOISED=0;NSUBDIV=[3,3,3]';
+  IM = 'IM_STRUCTURED_COMPOSITE(IM_TETRAHEDRON(8),1)';    % Integration method.
+  IM_SIMPLEX = 'IM_STRUCTURED_COMPOSITE(IM_TETRAHEDRON(8),1)'; 
+  FEM = 'FEM_PK(3,3)';      % Finite element method for the displacement.
+  FEM_RHS = FEM;      % Finite element method for the rhs
+  FEM_MULT = 'FEM_PK(3,0)';    % Finite element method for multipliers
+end;
+
+
+
+
+%%%%%   saving parameters                                             %%%%%
+ROOTFILENAME = 'SFB_maxmax';     % Root of data files.
+VTK_EXPORT = 2 % export solution to a .vtk file ?
+
+
