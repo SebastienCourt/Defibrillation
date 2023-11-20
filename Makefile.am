@@ -17,7 +17,7 @@ LDADD    = ../../src/libgetfem.la -lm @SUPLDFLAGS@
 #TESTS = shallow_water.pl
 
 EXTRA_DIST = \
-	SFB_maxmax.param	\
+	SFB_maxmax2.param	\
 	data_elasticity.param		
 
 LOG_COMPILER = perl
